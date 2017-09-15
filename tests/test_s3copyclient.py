@@ -23,7 +23,7 @@ from tests.chunked_worker import TestStingyRuntime, run_task_to_completion
 
 class TestAWSCopy(unittest.TestCase):
     def setUp(self):
-        self.test_bucket = infra.get_env("DSS_S3_BUCKET_TEST")
+        self.test_bucket = infra.get_env("S3_BUCKET")
         self.s3_blobstore = S3BlobStore()
         self.test_src_key = infra.generate_test_key()
         mpu = self.s3_blobstore.s3_client.create_multipart_upload(Bucket=self.test_bucket, Key=self.test_src_key)
@@ -178,7 +178,7 @@ class TestAWSCopy(unittest.TestCase):
 
 class TestAWSCopyNonMultipart(unittest.TestCase):
     def setUp(self):
-        self.test_bucket = infra.get_env("DSS_S3_BUCKET_TEST")
+        self.test_bucket = infra.get_env("S3_BUCKET")
         self.s3_blobstore = S3BlobStore()
         self.test_src_key = infra.generate_test_key()
         self.s3_blobstore.upload_file_handle(

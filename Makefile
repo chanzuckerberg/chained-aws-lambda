@@ -25,7 +25,7 @@ deploy:
 
 clean:
 	git clean -Xdf daemons $(MODULES)
-	git clean -df daemons/*/{chalicelib,domovoilib,vendor}
+	git clean -df daemons/*/{chalicelib,domovoilib}
 	git checkout daemons/*/.chalice/config.json
 
 requirements.txt requirements-dev.txt : %.txt : %.txt.in

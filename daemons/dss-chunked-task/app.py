@@ -13,9 +13,7 @@ from dss.events.chunkedtask import awsconstants
 
 app = domovoi.Domovoi()
 
-dss.Config.set_config(dss.DeploymentStage.NORMAL)
-
-expected_client_name = os.getenv("DSS_CHUNKED_TASK_CLIENT_NAME")
+expected_client_name = os.getenv("CHUNKED_TASK_CLIENT_NAME")
 worker_sns_topic = awsconstants.get_worker_sns_topic(expected_client_name)
 
 

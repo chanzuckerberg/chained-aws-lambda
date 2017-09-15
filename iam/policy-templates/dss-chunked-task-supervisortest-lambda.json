@@ -4,13 +4,19 @@
     {
       "Effect": "Allow",
       "Action": "logs:*",
-      "Resource": "arn:aws:logs:*:*:*"
+      "Resource": [
+        "arn:aws:logs:*:*:log-group:dss-chunked-task-fasttest-$stage",
+        "arn:aws:logs:*:*:log-group:dss-chunked-task-fasttest-$stage:log-stream:*",
+        "arn:aws:logs:*:*:log-group:dss-chunked-task-supervisortest-$stage",
+        "arn:aws:logs:*:*:log-group:dss-chunked-task-supervisortest-$stage:log-stream:*"
+      ]
     },
     {
       "Effect": "Allow",
       "Action": "sns:Publish",
       "Resource": [
-        "arn:aws:sns:*:$account_id:dss-*-$stage"
+        "arn:aws:sns:*:$account_id:dss-chunked-task-fasttest-$stage",
+        "arn:aws:sns:*:$account_id:dss-chunked-task-supervisortest-$stage"
       ]
     }
   ]

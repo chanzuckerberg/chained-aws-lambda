@@ -26,5 +26,5 @@ class LogActions:
 
 
 def get_worker_sns_topic(expected_client_name):
-    deployment_stage = os.getenv("DSS_DEPLOYMENT_STAGE")
+    deployment_stage = os.getenv("DEPLOYMENT_STAGE")
     return TASK_SNS_TOPIC_PREFIX + expected_client_name + "-" + deployment_stage

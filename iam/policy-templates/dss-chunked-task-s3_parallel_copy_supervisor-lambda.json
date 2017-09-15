@@ -10,13 +10,17 @@
         "logs:DescribeLogStreams",
         "logs:PutLogEvents"
       ],
-      "Resource": "arn:aws:logs:*:*:*"
+      "Resource": [
+        "arn:aws:logs:*:*:log-group:dss-chunked-task-s3_parallel_copy_supervisor-$stage",
+        "arn:aws:logs:*:*:log-group:dss-chunked-task-s3_parallel_copy_supervisor-$stage:log-stream:*"
+      ]
     },
     {
       "Effect": "Allow",
       "Action": "sns:Publish",
       "Resource": [
-        "arn:aws:sns:*:$account_id:dss-*-$stage"
+        "arn:aws:sns:*:$account_id:dss-chunked-task-s3_parallel_copy_supervisor-$stage",
+        "arn:aws:sns:*:$account_id:dss-chunked-task-s3_parallel_copy_worker-$stage"
       ]
     },
     {
@@ -26,10 +30,8 @@
         "s3:PutObject*"
       ],
       "Resource": [
-        "arn:aws:s3:::$DSS_S3_BUCKET",
-        "arn:aws:s3:::$DSS_S3_BUCKET/*",
-        "arn:aws:s3:::$DSS_S3_BUCKET_TEST",
-        "arn:aws:s3:::$DSS_S3_BUCKET_TEST/*"
+        "arn:aws:s3:::$S3_BUCKET",
+        "arn:aws:s3:::$S3_BUCKET/*"
       ]
     },
     {
