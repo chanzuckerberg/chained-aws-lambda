@@ -13,10 +13,10 @@ import unittest
 pkg_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))  # noqa
 sys.path.insert(0, pkg_root)  # noqa
 
-from dss.blobstore import BlobNotFoundError
-from dss.blobstore.s3 import S3BlobStore
-from dss.events.chainedawslambda import aws
-from dss.events.chainedawslambda.s3copyclient import S3CopyTask, S3ParallelCopySupervisorTask
+from chainedawslambda.blobstore import BlobNotFoundError
+from chainedawslambda.blobstore.s3 import S3BlobStore
+from chainedawslambda.events.chainedawslambda import aws
+from chainedawslambda.events.chainedawslambda.s3copyclient import S3CopyTask, S3ParallelCopySupervisorTask
 from tests import infra
 from tests.chunked_worker import TestStingyRuntime, run_task_to_completion
 

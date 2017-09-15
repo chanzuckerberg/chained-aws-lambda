@@ -8,7 +8,7 @@ $(chainedawslambdatargets): chained-aws-lambda-%:
 	rm -rf $@
 	cp -rf chained-aws-lambda $@
 	cat chained-aws-lambda/.chalice/config.json | jq '.app_name="$@" | .stages.$(DEPLOYMENT_STAGE).environment_variables.CHAINED_AWS_LAMBDA_CLIENT_NAME="$*"' > $@/.chalice/config.json
-	cp -R ../dss $@/domovoilib
+	cp -R ../chainedawslambda $@/domovoilib
 	./build_deploy_config.sh $@ $(DEPLOYMENT_STAGE)
 	cd $@; CHAINED_AWS_LAMBDA_CLIENT_NAME=$* domovoi deploy --stage $(DEPLOYMENT_STAGE)
 

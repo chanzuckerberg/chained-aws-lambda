@@ -7,9 +7,9 @@ import domovoi
 pkg_root = os.path.abspath(os.path.join(os.path.dirname(__file__), 'domovoilib'))  # noqa
 sys.path.insert(0, pkg_root)  # noqa
 
-import dss
-from dss.events.chainedawslambda import aws
-from dss.events.chainedawslambda import awsconstants
+import chainedawslambda
+from chainedawslambda.events.chainedawslambda import aws
+from chainedawslambda.events.chainedawslambda import awsconstants
 
 app = domovoi.Domovoi()
 

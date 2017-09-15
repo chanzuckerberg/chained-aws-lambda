@@ -19,7 +19,7 @@ envsubst_vars='$DEPLOYMENT_STAGE $S3_BUCKET $account_id'
 
 aws iam put-${iam_principal_type}-policy \
     --${iam_principal_type}-name $iam_principal_name \
-    --policy-name hca-dss-ci-cd \
+    --policy-name chained-aws-lambda-ci-cd \
     --policy-document file://<(cat "$policy_json" | \
                                    envsubst "$envsubst_vars" | \
                                    jq -c 'del(.Statement[].Sid)')
