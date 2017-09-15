@@ -33,5 +33,3 @@ class ARN:
 def send_sns_msg(topic_arn, message):
     sns_topic = resources.sns.Topic(str(topic_arn))
     sns_topic.publish(Message=json.dumps(message))
-
-

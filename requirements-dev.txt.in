@@ -4,4 +4,5 @@ mypy >= 0.521
 domovoi
 chalice >= 1.0.1
 awscli
+coverage
 -r requirements.txt
