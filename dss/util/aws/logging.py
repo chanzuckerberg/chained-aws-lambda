@@ -1,7 +1,6 @@
 import time
 
 import boto3
-import botocore.exceptions
 
 
 def log_message(log_group_name: str, log_stream_name: str, message: str):

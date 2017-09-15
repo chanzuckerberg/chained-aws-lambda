@@ -1,12 +1,8 @@
 import json
-import botocore
-from . import clients, resources, logging
 
+import botocore.exceptions
 
-AWS_MIN_CHUNK_SIZE = 64 * 1024 * 1024
-"""Files must be larger than this before we consider multipart uploads."""
-AWS_MAX_MULTIPART_COUNT = 10000
-"""Maximum number of parts allowed in a multipart upload.  This is a limitation imposed by S3."""
+from . import clients, logging, resources
 
 class ARN:
     fields = "arn partition service region account_id resource".split()
@@ -39,11 +35,3 @@ def send_sns_msg(topic_arn, message):
     sns_topic.publish(Message=json.dumps(message))
 
 
-def get_s3_chunk_size(filesize: int) -> int:
-    if filesize <= AWS_MAX_MULTIPART_COUNT * AWS_MIN_CHUNK_SIZE:
-        return AWS_MIN_CHUNK_SIZE
-    else:
-        div = filesize // AWS_MAX_MULTIPART_COUNT
-        if div * AWS_MAX_MULTIPART_COUNT < filesize:
-            div += 1
-        return ((div + 1048575) // 1048576) * 1048576

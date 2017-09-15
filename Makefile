@@ -2,7 +2,7 @@ include common.mk
 MODULES=dss tests
 
 lint:
-	flake8 $(MODULES) chalice/*.py daemons/*/*.py
+	flake8 $(MODULES) daemons/*/*.py
 
 mypy:
 	mypy --ignore-missing-imports $(MODULES)
@@ -21,13 +21,12 @@ smoketest:
 	scripts/smoketest.py
 
 deploy:
-	$(MAKE) -C chalice deploy
 	$(MAKE) -C daemons deploy
 
 clean:
-	git clean -Xdf chalice daemons $(MODULES)
-	git clean -df {chalice,daemons/*}/{chalicelib,domovoilib,vendor}
-	git checkout {chalice,daemons/*}/.chalice/config.json
+	git clean -Xdf daemons $(MODULES)
+	git clean -df daemons/*/{chalicelib,domovoilib,vendor}
+	git checkout daemons/*/.chalice/config.json
 
 requirements.txt requirements-dev.txt : %.txt : %.txt.in
 	[ ! -e .requirements-env ] || exit 1
@@ -37,7 +36,6 @@ requirements.txt requirements-dev.txt : %.txt : %.txt.in
 	pip install -r $< && \
 	pip freeze >> $@
 	rm -rf .requirements-env
-	scripts/find_missing_wheels.py requirements.txt
 
 requirements-dev.txt : requirements.txt.in
 

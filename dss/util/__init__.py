@@ -1,26 +1,5 @@
 from urllib.parse import SplitResult, parse_qs, urlencode, urlparse, urlunsplit
 
-import typing
-
-from ..hcablobstore import BundleFileMetadata
-
-
-def create_blob_key(file_info: typing.Dict[str, str]) -> str:
-    return "blobs/" + ".".join((
-        file_info[BundleFileMetadata.SHA256],
-        file_info[BundleFileMetadata.SHA1],
-        file_info[BundleFileMetadata.S3_ETAG],
-        file_info[BundleFileMetadata.CRC32C]
-    ))
-
-
-def paginate(boto3_paginator, *args, **kwargs):
-    for page in boto3_paginator.paginate(*args, **kwargs):
-        for result_key in boto3_paginator.result_keys:
-            for value in page.get(result_key.parsed.get("value"), []):
-                yield value
-
-
 class UrlBuilder:
     def __init__(self):
         self.splitted = SplitResult("", "", "", "", "")
