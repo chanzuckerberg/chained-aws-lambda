@@ -11,15 +11,15 @@
         "logs:PutLogEvents"
       ],
       "Resource": [
-        "arn:aws:logs:*:*:log-group:chained-aws-lambda-s3_copy_lambda-$stage",
-        "arn:aws:logs:*:*:log-group:chained-aws-lambda-s3_copy_lambda-$stage:log-stream:*"
+        "arn:aws:logs:*:*:log-group:chained-aws-lambda-s3_copy-$stage",
+        "arn:aws:logs:*:*:log-group:chained-aws-lambda-s3_copy-$stage:log-stream:*"
       ]
     },
     {
       "Effect": "Allow",
       "Action": "sns:Publish",
       "Resource": [
-        "arn:aws:sns:*:$account_id:chained-aws-lambda-s3_copy_lambda-$stage"
+        "arn:aws:sns:*:$account_id:chained-aws-lambda-s3_copy-$stage"
       ]
     },
     {
