@@ -9,7 +9,6 @@ addons:
     - moreutils
     - gettext
 install:
-- pip install -r requirements.txt
 - pip install -r requirements-dev.txt
 script:
 - set -eo pipefail
