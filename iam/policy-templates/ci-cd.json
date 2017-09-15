@@ -5,6 +5,8 @@
       "Effect": "Allow",
       "Action": [
         "s3:AbortMultipartUpload",
+        "s3:Get*",
+        "s3:List*",
         "s3:PutObject*"
       ],
       "Resource": [
@@ -13,26 +15,16 @@
       ]
     },
     {
-      "Effect": "Allow",
-      "Action": [
-        "s3:Get*",
-        "s3:List*"
-      ],
-      "Resource": "*"
-    },
-    {
-      "Sid": "hcaDssCiCdLambdaReadAccess",
-      "Action": [
-        "lambda:ListFunctions",
-        "lambda:ListTags",
-        "lambda:TagResource",
-        "apigateway:*"
-      ],
+      "Action": "lambda:List*",
       "Resource": "*",
       "Effect": "Allow"
     },
     {
-      "Sid": "hcaDssCiCdIamListRolesAccess",
+      "Action": "lambda:*",
+      "Resource": "arn:aws:lambda:*:$account_id:function:chained-aws-lambda-*",
+      "Effect": "Allow"
+    },
+    {
       "Effect": "Allow",
       "Action": [
         "iam:ListRoles"
@@ -42,10 +34,8 @@
     {
       "Effect": "Allow",
       "Action": [
-        "logs:CreateLogGroup",
-        "logs:CreateLogStream",
-        "logs:DescribeLogGroups",
-        "logs:DescribeLogStreams",
+        "logs:CreateLog*",
+        "logs:DescribeLog*",
         "logs:FilterLogEvents",
         "logs:PutLogEvents"
       ],
@@ -62,11 +52,12 @@
     },
     {
       "Effect": "Allow",
-      "Action": "sns:Publish",
+      "Action": "sns:*",
       "Resource": [
         "arn:aws:sns:*:$account_id:chained-aws-lambda-fasttest-$DEPLOYMENT_STAGE",
         "arn:aws:sns:*:$account_id:chained-aws-lambda-s3_copy-$DEPLOYMENT_STAGE",
         "arn:aws:sns:*:$account_id:chained-aws-lambda-s3_parallel_copy_supervisor-$DEPLOYMENT_STAGE",
+        "arn:aws:sns:*:$account_id:chained-aws-lambda-s3_parallel_copy_worker-$DEPLOYMENT_STAGE",
         "arn:aws:sns:*:$account_id:chained-aws-lambda-supervisortest-$DEPLOYMENT_STAGE"
       ]
     }
