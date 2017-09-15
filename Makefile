@@ -1,5 +1,5 @@
 include common.mk
-MODULES=chainedawslambda tests
+MODULES=src/chainedawslambda tests
 
 lint:
 	flake8 $(MODULES) daemons/*/*.py
@@ -10,7 +10,7 @@ mypy:
 test_srcs := $(wildcard tests/test_*.py)
 
 test: lint mypy
-	coverage run --source=chainedawslambda -m unittest discover tests -v
+	coverage run --source=src/chainedawslambda -m unittest discover tests -v
 
 fast_test: lint mypy $(test_srcs)
 
