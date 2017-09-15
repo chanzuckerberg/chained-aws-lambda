@@ -1,15 +1,15 @@
 include ../common.mk
 
-deploy: dss-chunked-task
+deploy: chained-aws-lambda
 
-awschunkedtasktargets := $(shell ../scripts/get_all_dss_chunked_task_clients.py)
-dss-chunked-task: $(awschunkedtasktargets)
-$(awschunkedtasktargets): dss-chunked-task-%:
+chainedawslambdatargets := $(shell ../scripts/get_all_chained_aws_lambda_clients.py)
+chained-aws-lambda: $(chainedawslambdatargets)
+$(chainedawslambdatargets): chained-aws-lambda-%:
 	rm -rf $@
-	cp -rf dss-chunked-task $@
-	cat dss-chunked-task/.chalice/config.json | jq '.app_name="$@" | .stages.$(DEPLOYMENT_STAGE).environment_variables.CHUNKED_TASK_CLIENT_NAME="$*"' > $@/.chalice/config.json
+	cp -rf chained-aws-lambda $@
+	cat chained-aws-lambda/.chalice/config.json | jq '.app_name="$@" | .stages.$(DEPLOYMENT_STAGE).environment_variables.CHAINED_AWS_LAMBDA_CLIENT_NAME="$*"' > $@/.chalice/config.json
 	cp -R ../dss $@/domovoilib
 	./build_deploy_config.sh $@ $(DEPLOYMENT_STAGE)
-	cd $@; CHUNKED_TASK_CLIENT_NAME=$* domovoi deploy --stage $(DEPLOYMENT_STAGE)
+	cd $@; CHAINED_AWS_LAMBDA_CLIENT_NAME=$* domovoi deploy --stage $(DEPLOYMENT_STAGE)
 
-.PHONY: dss-chunked-task $(awschunkedtasktargets)
+.PHONY: chained-aws-lambda $(chainedawslambdatargets)

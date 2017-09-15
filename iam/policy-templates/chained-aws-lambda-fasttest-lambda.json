@@ -11,15 +11,15 @@
         "logs:PutLogEvents"
       ],
       "Resource": [
-        "arn:aws:logs:*:*:log-group:dss-chunked-task-fasttest-$stage",
-        "arn:aws:logs:*:*:log-group:dss-chunked-task-fasttest-$stage:log-stream:*"
+        "arn:aws:logs:*:*:log-group:chained-aws-lambda-fasttest-$stage",
+        "arn:aws:logs:*:*:log-group:chained-aws-lambda-fasttest-$stage:log-stream:*"
       ]
     },
     {
       "Effect": "Allow",
       "Action": "sns:Publish",
       "Resource": [
-        "arn:aws:sns:*:$account_id:dss-chunked-task-fasttest-$stage"
+        "arn:aws:sns:*:$account_id:chained-aws-lambda-fasttest-$stage"
       ]
     }
   ]

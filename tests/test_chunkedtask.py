@@ -13,12 +13,12 @@ import unittest
 pkg_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))  # noqa
 sys.path.insert(0, pkg_root)  # noqa
 
-from dss.events import chunkedtask
-from dss.events.chunkedtask import Task, aws, _awstest
+from dss.events import chainedawslambda
+from dss.events.chainedawslambda import Task, aws, _awstest
 from tests.chunked_worker import TestStingyRuntime, run_task_to_completion
 
 
-class TestChunkedTask(chunkedtask.Task[typing.Tuple[int, int, int], typing.Tuple[int, int]]):
+class TestChainedAWSLambda(chainedawslambda.Task[typing.Tuple[int, int, int], typing.Tuple[int, int]]):
     def __init__(
             self,
             state: typing.Tuple[int, int, int],
@@ -45,13 +45,13 @@ class TestChunkedTask(chunkedtask.Task[typing.Tuple[int, int, int], typing.Tuple
         return None
 
 
-class TestChunkedTaskRunner(unittest.TestCase):
+class TestChainedAWSLambdaRunner(unittest.TestCase):
     def test_workload_resumes(self):
         initial_state = (1, 1, 25)
         expected_max_one_unit_runtime_millis = 10  # we know exactly how long we'll take.  we're so good at guessing!
 
         freeze_count, result = run_task_to_completion(
-            TestChunkedTask,
+            TestChainedAWSLambda,
             initial_state,
             lambda results: TestStingyRuntime(results, itertools.repeat(sys.maxsize, 19)),
             lambda task_class, task_state, runtime: task_class(task_state, expected_max_one_unit_runtime_millis),
@@ -83,7 +83,7 @@ class TestForkedTask(unittest.TestCase):
 
                 return None
 
-        def task_creator(task_class: typing.Type[Task], task_state: typing.Any, runtime: chunkedtask.Runtime):
+        def task_creator(task_class: typing.Type[Task], task_state: typing.Any, runtime: chainedawslambda.Runtime):
             if task_class == LocalSupervisorTask:
                 return LocalSupervisorTask(task_state, typing.cast(TestStingyRuntime, runtime))
             elif task_class == _awstest.AWSFastTestTask:
@@ -124,7 +124,7 @@ class TestForkedTask(unittest.TestCase):
         self.fail("Did not find success marker in logs")
 
 
-class TestAWSChunkedTask(unittest.TestCase):
+class TestAWSChainedAWSLambda(unittest.TestCase):
     def test_fast(self):
         task_id = aws.schedule_task(_awstest.AWSFastTestTask, [0, 5])
 

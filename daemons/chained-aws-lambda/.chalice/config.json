@@ -1,7 +1,6 @@
 {
-  "app_name": "dss-chunked-task",
+  "app_name": "chained-aws-lambda",
   "environment_variables": {
-    "GOOGLE_APPLICATION_CREDENTIALS": "/var/task/domovoilib/gcp-credentials.json"
   },
   "stages": {
     "dev": {

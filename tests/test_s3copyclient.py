@@ -15,8 +15,8 @@ sys.path.insert(0, pkg_root)  # noqa
 
 from dss.blobstore import BlobNotFoundError
 from dss.blobstore.s3 import S3BlobStore
-from dss.events.chunkedtask import aws
-from dss.events.chunkedtask.s3copyclient import S3CopyTask, S3ParallelCopySupervisorTask
+from dss.events.chainedawslambda import aws
+from dss.events.chainedawslambda.s3copyclient import S3CopyTask, S3ParallelCopySupervisorTask
 from tests import infra
 from tests.chunked_worker import TestStingyRuntime, run_task_to_completion
 

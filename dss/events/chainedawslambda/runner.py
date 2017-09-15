@@ -14,11 +14,11 @@ class Runner(typing.Generic[RunnerStateType, RunnerResultType]):
     """
     def __init__(
             self,
-            chunkedtask: Task[RunnerStateType, RunnerResultType],
+            chainedawslambda: Task[RunnerStateType, RunnerResultType],
             runtime: Runtime[RunnerStateType, RunnerResultType]) -> None:
-        self.chunkedtask = chunkedtask
+        self.chainedawslambda = chainedawslambda
         self.runtime = runtime
-        self.observed_max_one_unit_runtime_millis = self.chunkedtask.expected_max_one_unit_runtime_millis
+        self.observed_max_one_unit_runtime_millis = self.chainedawslambda.expected_max_one_unit_runtime_millis
 
     def run(self) -> None:
         """
@@ -27,7 +27,7 @@ class Runner(typing.Generic[RunnerStateType, RunnerResultType]):
         """
         while True:
             before = self.runtime.get_remaining_time_in_millis()
-            result = self.chunkedtask.run_one_unit()
+            result = self.chainedawslambda.run_one_unit()
             if result is not None:
                 self.runtime.work_complete_callback(result)
                 return
@@ -44,5 +44,5 @@ class Runner(typing.Generic[RunnerStateType, RunnerResultType]):
                 break
 
         # schedule the next chunk of work.
-        state = self.chunkedtask.get_state()
-        self.runtime.schedule_work(self.chunkedtask.__class__, state, False)
+        state = self.chainedawslambda.get_state()
+        self.runtime.schedule_work(self.chainedawslambda.__class__, state, False)

@@ -8,12 +8,12 @@ pkg_root = os.path.abspath(os.path.join(os.path.dirname(__file__), 'domovoilib')
 sys.path.insert(0, pkg_root)  # noqa
 
 import dss
-from dss.events.chunkedtask import aws
-from dss.events.chunkedtask import awsconstants
+from dss.events.chainedawslambda import aws
+from dss.events.chainedawslambda import awsconstants
 
 app = domovoi.Domovoi()
 
-expected_client_name = os.getenv("CHUNKED_TASK_CLIENT_NAME")
+expected_client_name = os.getenv("CHAINED_AWS_LAMBDA_CLIENT_NAME")
 worker_sns_topic = awsconstants.get_worker_sns_topic(expected_client_name)
 
 

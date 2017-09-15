@@ -3,7 +3,7 @@ import itertools
 import typing
 import uuid
 
-from dss.events.chunkedtask import Runner, Runtime, Task
+from dss.events.chainedawslambda import Runner, Runtime, Task
 
 
 class TestStingyRuntime(Runtime[dict, typing.Any]):

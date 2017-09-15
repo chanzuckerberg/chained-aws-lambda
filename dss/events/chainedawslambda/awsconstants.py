@@ -1,11 +1,11 @@
 import os
 
-TASK_SNS_TOPIC_PREFIX = "dss-chunked-task-"
-TASK_RETRY_QUEUE_PREFIX = "dss-chunked-task-"
+TASK_SNS_TOPIC_PREFIX = "chained-aws-lambda-"
+TASK_RETRY_QUEUE_PREFIX = "chained-aws-lambda-"
 
-CLIENT_KEY = "chunked_worker_client"
+CLIENT_KEY = "chained-aws-lambda"
 REQUEST_VERSION_KEY = "request_version"
-TASK_ID_KEY = "chunked_worker_task_id"
+TASK_ID_KEY = "task_id"
 STATE_KEY = "state"
 
 FALLBACK_LOG_STREAM_NAME = "fallback"

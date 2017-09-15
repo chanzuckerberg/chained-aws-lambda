@@ -84,8 +84,6 @@
         "logs:*"
       ],
       "Resource": [
-        "arn:aws:logs:*:$account_id:log-group:dss-chunked-task-*",
-        "arn:aws:logs:*:$account_id:log-group:chunked_task_worker*",
         "arn:aws:logs:*:$account_id:log-group:dss-test-logging*"
       ]
     },
