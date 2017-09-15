@@ -2,61 +2,23 @@
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "hcaDssCiCdS3WriteAccess",
       "Effect": "Allow",
       "Action": [
         "s3:AbortMultipartUpload",
-        "s3:DeleteBucketPolicy",
-        "s3:DeleteBucketWebsite",
-        "s3:DeleteObject",
-        "s3:DeleteObjectVersion",
-        "s3:PutObject",
-        "s3:PutObjectAcl",
-        "s3:PutObjectTagging",
-        "s3:PutObjectVersionAcl",
-        "s3:ReplicateDelete",
-        "s3:ReplicateObject",
-        "s3:RestoreObject"
+        "s3:PutObject*"
       ],
       "Resource": [
-        "arn:aws:s3:::$DSS_S3_BUCKET",
-        "arn:aws:s3:::$DSS_S3_BUCKET/*",
-        "arn:aws:s3:::$DSS_S3_BUCKET_TEST",
-        "arn:aws:s3:::$DSS_S3_BUCKET_TEST/*"
+        "arn:aws:s3:::$S3_BUCKET",
+        "arn:aws:s3:::$S3_BUCKET/*"
       ]
     },
     {
-      "Sid": "hcaDssCiCdS3ConfigAccess",
-      "Effect": "Allow",
-      "Action": [
-        "s3:PutAccelerateConfiguration",
-        "s3:PutBucket*",
-        "s3:PutLifecycleConfiguration",
-        "s3:PutReplicationConfiguration"
-      ],
-      "Resource": [
-        "arn:aws:s3:::$DSS_S3_BUCKET",
-        "arn:aws:s3:::$DSS_S3_BUCKET_TEST",
-        "arn:aws:s3:::$DSS_S3_BUCKET_STAGING"
-      ]
-    },
-    {
-      "Sid": "hcaDssCiCdS3ReadOnlyAccess",
       "Effect": "Allow",
       "Action": [
         "s3:Get*",
         "s3:List*"
       ],
-      "Resource": [
-        "arn:aws:s3:::$DSS_S3_BUCKET",
-        "arn:aws:s3:::$DSS_S3_BUCKET/*",
-        "arn:aws:s3:::$DSS_S3_BUCKET_TEST",
-        "arn:aws:s3:::$DSS_S3_BUCKET_TEST/*",
-        "arn:aws:s3:::$DSS_S3_BUCKET_TEST_FIXTURES",
-        "arn:aws:s3:::$DSS_S3_BUCKET_TEST_FIXTURES/*",
-        "arn:aws:s3:::$DSS_S3_BUCKET_STAGING",
-        "arn:aws:s3:::$DSS_S3_BUCKET_STAGING/*"
-      ]
+      "Resource": "*"
     },
     {
       "Sid": "hcaDssCiCdLambdaReadAccess",
@@ -78,30 +40,35 @@
       "Resource": "arn:aws:iam::$account_id:role/"
     },
     {
-      "Sid": "hcaDssCiCdTestLogging",
       "Effect": "Allow",
       "Action": [
-        "logs:*"
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:DescribeLogGroups",
+        "logs:DescribeLogStreams",
+        "logs:FilterLogEvents",
+        "logs:PutLogEvents"
       ],
       "Resource": [
-        "arn:aws:logs:*:$account_id:log-group:dss-test-logging*"
+        "arn:aws:logs:*:*:log-group:chained-aws-lambda-fasttest-$DEPLOYMENT_STAGE",
+        "arn:aws:logs:*:*:log-group:chained-aws-lambda-fasttest-$DEPLOYMENT_STAGE:log-stream:*",
+        "arn:aws:logs:*:*:log-group:chained-aws-lambda-s3_copy-$DEPLOYMENT_STAGE",
+        "arn:aws:logs:*:*:log-group:chained-aws-lambda-s3_copy-$DEPLOYMENT_STAGE:log-stream:*",
+        "arn:aws:logs:*:*:log-group:chained-aws-lambda-s3_parallel_copy-supervisor-$DEPLOYMENT_STAGE",
+        "arn:aws:logs:*:*:log-group:chained-aws-lambda-s3_parallel_copy_supervisor-$DEPLOYMENT_STAGE:log-stream:*",
+        "arn:aws:logs:*:*:log-group:chained-aws-lambda-supervisortest-$DEPLOYMENT_STAGE",
+        "arn:aws:logs:*:*:log-group:chained-aws-lambda-supervisortest-$DEPLOYMENT_STAGE:log-stream:*"
       ]
     },
     {
-      "Sid": "hcaDssCiCdLambdaElasticsearchSNSAdminAccess",
-      "Action": [
-        "lambda:*",
-        "es:*",
-        "sns:*"
-      ],
+      "Effect": "Allow",
+      "Action": "sns:Publish",
       "Resource": [
-        "arn:aws:lambda:*:$account_id:function:dss-*",
-        "arn:aws:es:*:$account_id:domain/dss-index-dev",
-        "arn:aws:es:*:$account_id:domain/dss-index-dev/*",
-        "arn:aws:sns:*:$account_id:dss-*",
-        "arn:aws:sns:*:$account_id:domovoi-s3-bucket-events-*"
-      ],
-      "Effect": "Allow"
+        "arn:aws:sns:*:$account_id:chained-aws-lambda-fasttest-$DEPLOYMENT_STAGE",
+        "arn:aws:sns:*:$account_id:chained-aws-lambda-s3_copy-$DEPLOYMENT_STAGE",
+        "arn:aws:sns:*:$account_id:chained-aws-lambda-s3_parallel_copy_supervisor-$DEPLOYMENT_STAGE",
+        "arn:aws:sns:*:$account_id:chained-aws-lambda-supervisortest-$DEPLOYMENT_STAGE"
+      ]
     }
   ]
 }
