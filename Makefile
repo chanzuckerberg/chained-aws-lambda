@@ -28,15 +28,4 @@ clean:
 	git clean -df daemons/*/{chalicelib,domovoilib}
 	git checkout daemons/*/.chalice/config.json
 
-requirements.txt requirements-dev.txt : %.txt : %.txt.in
-	[ ! -e .requirements-env ] || exit 1
-	echo "# You should not edit this file directly.  Instead, you should edit $<." > $@
-	virtualenv .requirements-env
-	source .requirements-env/bin/activate && \
-	pip install -r $< && \
-	pip freeze >> $@
-	rm -rf .requirements-env
-
-requirements-dev.txt : requirements.txt.in
-
 .PHONY: test lint mypy $(test_srcs)

@@ -1,29 +1,7 @@
-# You should not edit this file directly.  Instead, you should edit requirements-dev.txt.in.
-awscli==1.11.154
-boto3==1.4.7
-botocore==1.7.11
-certifi==2017.7.27.1
-chalice==1.0.2
-chardet==3.0.4
-click==6.6
-colorama==0.3.7
-coverage==4.4.1
-docutils==0.14
-domovoi==1.2.6
-flake8==3.4.1
-idna==2.6
-jmespath==0.9.3
-mccabe==0.6.1
-mypy==0.521
-pyasn1==0.3.4
-pycodestyle==2.3.1
-pyflakes==1.5.0
-python-dateutil==2.6.1
-PyYAML==3.12
-requests==2.18.4
-rsa==3.4.2
-s3transfer==0.1.11
-six==1.10.0
-typed-ast==1.0.4
-typing==3.5.3.0
-urllib3==1.22
+flake8
+mypy >= 0.521
+domovoi
+chalice >= 1.0.1
+awscli
+coverage
+-r requirements.txt

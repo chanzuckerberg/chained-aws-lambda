@@ -1,3 +1,0 @@
-# Be sure to run "make requirements.txt" after editing this file.
-boto3
-requests
