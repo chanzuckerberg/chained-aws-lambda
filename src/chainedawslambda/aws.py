@@ -168,8 +168,8 @@ def dispatch(context, payload, expected_client_name):
     try:
         # special case: if the client name is `AWS_FAST_TEST_CLIENT_NAME`, we use a special runtime environment so we
         # don't take forever running the test.
-        if client_name == _awstest.AWS_FAST_TEST_CLIENT_NAME:
-            runtime = _awstest.AWSFastTestRuntime(context, task_id)
+        if client_class == _awstest.AWSFastTestTask:
+            runtime = _awstest.AWSFastTestRuntime(context, client_name, task_id)
         else:
             runtime = AWSRuntime(context, client_name, task_id)
 

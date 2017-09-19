@@ -51,8 +51,8 @@ class AWSFastTestRuntime(AWSRuntime):
 
     This should only be used for the fast test.
     """
-    def __init__(self, context, task_id: str) -> None:
-        super().__init__(context, AWS_FAST_TEST_CLIENT_NAME, task_id)
+    def __init__(self, context, client_name: str, task_id: str) -> None:
+        super().__init__(context, client_name, task_id)
         self.time_remaining_iterator = itertools.chain(
             [int(AWS_FAST_TEST_EST_TIME_MS * TIME_OVERHEAD_FACTOR) + 1],
             itertools.repeat(0)
