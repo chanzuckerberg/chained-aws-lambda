@@ -18,7 +18,12 @@ from chainedawslambda.blobstore.s3 import S3BlobStore
 from chainedawslambda import aws
 from chainedawslambda.s3copyclient import S3CopyTask, S3ParallelCopySupervisorTask
 from tests import infra
-from tests.chunked_worker import TestStingyRuntime, run_task_to_completion
+from tests.chained_lambda_utils import TestStingyRuntime, run_task_to_completion
+
+
+def setUpModule():
+    aws.add_client("chained-aws-lambda-s3-parallel-copy-supervisor-dev", S3ParallelCopySupervisorTask)
+    aws.add_client("chained-aws-lambda-s3-copy-dev", S3CopyTask)
 
 
 class TestAWSCopy(unittest.TestCase):

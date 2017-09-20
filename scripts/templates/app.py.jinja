@@ -1,0 +1,37 @@
+import json
+import os
+import sys
+
+import domovoi
+
+pkg_root = os.path.abspath(os.path.join(os.path.dirname(__file__), 'domovoilib'))  # noqa
+sys.path.insert(0, pkg_root)  # noqa
+
+from chainedawslambda import aws
+from chainedawslambda import awsconstants
+{# imports for the provided clients #}
+{% for provided_client in provided_clients %}
+from {{ provided_client['package_name'] }} import {{ provided_client['class_name'] }}
+{% endfor %}
+
+app = domovoi.Domovoi()
+
+@app.sns_topic_subscriber("{{ lambda_name | replace("\"", "\\\"") }}")
+def process_work(event: dict, context) -> None:
+    {# inject the provided clients #}
+    {% for provided_client in provided_clients %}
+    aws.add_client("{{ provided_client['lambda_name'] | replace("\"", "\\\"") }}", {{ provided_client['class_name'] }})
+    {% endfor %}
+
+    try:
+        import userclients
+    except ImportError:
+        pass
+    else:
+        {# inject the user's clients #}
+        for client_name, client_class in userclients.clients():
+            aws.add_client(client_name, client_class)
+
+    payload = json.loads(event["Records"][0]["Sns"]["Message"])
+    aws.dispatch(context, payload, "{{ lambda_name | replace("\"", "\\\"") }}")
+{# this is here to generate the final NL #}

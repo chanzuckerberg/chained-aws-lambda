@@ -1,8 +1,3 @@
-import os
-
-TASK_SNS_TOPIC_PREFIX = "chained-aws-lambda-"
-TASK_RETRY_QUEUE_PREFIX = "chained-aws-lambda-"
-
 CLIENT_KEY = "chained-aws-lambda"
 REQUEST_VERSION_KEY = "request_version"
 TASK_ID_KEY = "task_id"
@@ -23,8 +18,3 @@ class LogActions:
     EXCEPTION = "exception"
     MISMATCHED_CLIENTS = "mismatched_clients"
     COMPLETE = "complete"
-
-
-def get_worker_sns_topic(expected_client_name):
-    deployment_stage = os.getenv("DEPLOYMENT_STAGE")
-    return TASK_SNS_TOPIC_PREFIX + expected_client_name + "-" + deployment_stage

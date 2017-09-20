@@ -6,8 +6,9 @@ import typing
 
 import boto3
 
+from . import aws
 from ._awsimpl import AWSRuntime
-from .awsconstants import LogActions, get_worker_sns_topic
+from .awsconstants import LogActions
 from .constants import TIME_OVERHEAD_FACTOR
 from .base import Runtime, Task
 
@@ -18,7 +19,7 @@ def is_task_complete(client_name: str, task_id: str):
     """
     logs_client = boto3.client('logs')
     response = logs_client.filter_log_events(
-        logGroupName=get_worker_sns_topic(client_name),
+        logGroupName=client_name,
         logStreamNames=[task_id],
     )
 
@@ -38,7 +39,6 @@ def is_task_complete(client_name: str, task_id: str):
 # lambda.  For production code, it may make sense to disable this, although it's pretty harmless.
 
 
-AWS_FAST_TEST_CLIENT_NAME = "fasttest"
 AWS_FAST_TEST_EST_TIME_MS = 100
 
 
@@ -124,9 +124,6 @@ class SupervisorTask(Task[dict, bool]):
         raise NotImplementedError()
 
 
-AWS_SUPERVISOR_TEST_CLIENT_NAME = "supervisortest"
-
-
 class AWSSupervisorTask(SupervisorTask):
     def __init__(self, state: dict, runtime: AWSRuntime) -> None:
         super().__init__(state, runtime)
@@ -137,7 +134,9 @@ class AWSSupervisorTask(SupervisorTask):
                 time.time() < self.last_checked + 1):
             time.sleep(1)
 
-        if is_task_complete(AWS_FAST_TEST_CLIENT_NAME, self.state[SupervisorTask.SPAWNED_TASK_KEY]):
+        client_name = aws.resolve_class(AWSFastTestTask)
+
+        if is_task_complete(client_name, self.state[SupervisorTask.SPAWNED_TASK_KEY]):
             return True
 
         self.last_checked = time.time()

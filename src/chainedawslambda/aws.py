@@ -6,24 +6,36 @@ import uuid
 
 import boto3
 
-from . import _awstest, awsconstants, s3copyclient
+from . import _awstest, awsconstants
 from ._awsimpl import AWSRuntime
 from .base import Task
 from .runner import Runner
 
-
-# this is the authoritative mapping between client names and Task classes.
-def get_clients():
-    return {
-        _awstest.AWS_FAST_TEST_CLIENT_NAME: _awstest.AWSFastTestTask,
-        _awstest.AWS_SUPERVISOR_TEST_CLIENT_NAME: _awstest.AWSSupervisorTask,
-        s3copyclient.AWS_S3_COPY_CLIENT_NAME: s3copyclient.S3CopyTask,
-        s3copyclient.AWS_S3_PARALLEL_COPY_SUPERVISOR_CLIENT_NAME: s3copyclient.S3ParallelCopySupervisorTask,
-        s3copyclient.AWS_S3_PARALLEL_COPY_WORKER_CLIENT_NAME: s3copyclient.S3ParallelCopyWorkerTask,
-    }
-
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
+
+
+clients = dict()  # type: typing.MutableMapping[str, Task]
+
+
+# this is the authoritative mapping between client names and Task classes.
+def get_clients() -> typing.MutableMapping[str, Task]:
+    return clients
+
+
+def add_client(client_name: str, client_class: Task):
+    clients[client_name] = client_class
+
+
+def resolve_class(task_class: typing.Type[Task]):
+    clients = get_clients()
+    for client_name, client_class in clients.items():
+        if client_class == task_class:
+            break
+    else:
+        raise ValueError(f"Unknown task class {task_class}.")
+
+    return client_name
 
 
 def schedule_task(task_class: typing.Type[Task[dict, typing.Any]], state: dict, task_id: str=None) -> str:
@@ -31,12 +43,7 @@ def schedule_task(task_class: typing.Type[Task[dict, typing.Any]], state: dict, 
     Schedule or reschedule a task for execution.  If it's a new task, task_id should be None.  If it's the resumption of
     an existing task, then task_id should be the original task's task_id.
     """
-    clients = get_clients()
-    for client_name, client_class in clients.items():
-        if client_class == task_class:
-            break
-    else:
-        raise ValueError(f"Unknown task class {task_class}.")
+    client_name = resolve_class(task_class)
 
     if task_id is None:
         task_id = str(uuid.uuid4())
@@ -56,8 +63,7 @@ def schedule_task(task_class: typing.Type[Task[dict, typing.Any]], state: dict, 
 
     sns_client = boto3.client("sns")
     region = boto3.Session().region_name
-    topic = awsconstants.get_worker_sns_topic(client_name)
-    arn = f"arn:aws:sns:{region}:{accountid}:{topic}"
+    arn = f"arn:aws:sns:{region}:{accountid}:{client_name}"
     sns_client.publish(
         TopicArn=arn,
         Message=json.dumps(payload),

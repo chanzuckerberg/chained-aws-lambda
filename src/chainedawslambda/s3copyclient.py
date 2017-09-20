@@ -11,13 +11,6 @@ from . import Runtime, Task
 from .blobstore.s3 import S3BlobStore
 
 
-AWS_S3_COPY_CLIENT_NAME = "s3_copy"
-AWS_S3_COPY_AND_WRITE_METADATA_CLIENT_NAME = "s3_copy_write_metadata"
-
-AWS_S3_PARALLEL_COPY_SUPERVISOR_CLIENT_NAME = "s3_parallel_copy_supervisor"
-AWS_S3_PARALLEL_COPY_WORKER_CLIENT_NAME = "s3_parallel_copy_worker"
-
-
 # intuitively, this ought to be an enum, but serializing an enum is way too complicated.
 class S3CopyTaskKeys:
     SOURCE_BUCKET = "srcbucket"

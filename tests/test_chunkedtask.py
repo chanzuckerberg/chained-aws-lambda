@@ -13,8 +13,13 @@ import unittest
 pkg_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', "src"))  # noqa
 sys.path.insert(0, pkg_root)  # noqa
 
-from chainedawslambda import Task, aws, _awstest
-from tests.chunked_worker import TestStingyRuntime, run_task_to_completion
+from chainedawslambda import Runtime, Task, aws, _awstest, s3copyclient
+from tests.chained_lambda_utils import TestStingyRuntime, run_task_to_completion
+
+
+def setUpModule():
+    aws.add_client("chained-aws-lambda-fasttest-dev", _awstest.AWSFastTestTask)
+    aws.add_client("chained-aws-lambda-supervisortest-dev", _awstest.AWSSupervisorTask)
 
 
 class TestChainedAWSLambda(Task[typing.Tuple[int, int, int], typing.Tuple[int, int]]):
@@ -82,7 +87,7 @@ class TestForkedTask(unittest.TestCase):
 
                 return None
 
-        def task_creator(task_class: typing.Type[Task], task_state: typing.Any, runtime: chainedawslambda.Runtime):
+        def task_creator(task_class: typing.Type[Task], task_state: typing.Any, runtime: Runtime):
             if task_class == LocalSupervisorTask:
                 return LocalSupervisorTask(task_state, typing.cast(TestStingyRuntime, runtime))
             elif task_class == _awstest.AWSFastTestTask:
@@ -112,10 +117,11 @@ class TestForkedTask(unittest.TestCase):
         spins until it sees the completion marker written in AWS Cloudwatch by the spawned task.
         """
         task_id = aws.schedule_task(_awstest.AWSSupervisorTask, dict())
+        client_name = aws.resolve_class(_awstest.AWSSupervisorTask)
 
         starttime = time.time()
         while time.time() < starttime + timeout_seconds:
-            if _awstest.is_task_complete(_awstest.AWS_SUPERVISOR_TEST_CLIENT_NAME, task_id):
+            if _awstest.is_task_complete(client_name, task_id):
                 return
 
             time.sleep(1)
@@ -126,10 +132,11 @@ class TestForkedTask(unittest.TestCase):
 class TestAWSChainedAWSLambda(unittest.TestCase):
     def test_fast(self):
         task_id = aws.schedule_task(_awstest.AWSFastTestTask, [0, 5])
+        client_name = aws.resolve_class(_awstest.AWSFastTestTask)
 
         starttime = time.time()
         while time.time() < starttime + 30:
-            if _awstest.is_task_complete(_awstest.AWS_FAST_TEST_CLIENT_NAME, task_id):
+            if _awstest.is_task_complete(client_name, task_id):
                 return
 
             time.sleep(1)

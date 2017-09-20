@@ -39,4 +39,4 @@ class AWSRuntime(Runtime[dict, typing.Any]):
 
     @staticmethod
     def log(client_key: str, task_id: str, message: str):
-        log_message(awsconstants.get_worker_sns_topic(client_key), task_id, message)
+        log_message(client_key, task_id, message)

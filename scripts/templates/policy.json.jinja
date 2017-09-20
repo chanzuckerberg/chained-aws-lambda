@@ -1,0 +1,34 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:DescribeLogGroups",
+        "logs:DescribeLogStreams",
+        "logs:FilterLogEvents",
+        "logs:PutLogEvents"
+      ],
+      "Resource": [
+        {% for child_lambda_name in children_lambda %}
+        "arn:aws:logs:*:*:log-group:{{ child_lambda_name }}",
+        "arn:aws:logs:*:*:log-group:{{ child_lambda_name }}:log-stream:*",
+        {% endfor %}
+        "arn:aws:logs:*:*:log-group:{{ lambda_name }}",
+        "arn:aws:logs:*:*:log-group:{{ lambda_name }}:log-stream:*"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": "sns:Publish",
+      "Resource": [
+        {% for child_lambda_name in children_lambda %}
+        "arn:aws:sns:*:{{ account_id }}:{{ child_lambda_name }}",
+        {% endfor %}
+        "arn:aws:sns:*:{{ account_id }}:{{ lambda_name }}"
+      ]
+    }
+  ]
+}

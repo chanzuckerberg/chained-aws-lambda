@@ -40,25 +40,25 @@
         "logs:PutLogEvents"
       ],
       "Resource": [
-        "arn:aws:logs:*:*:log-group:chained-aws-lambda-fasttest-$DEPLOYMENT_STAGE",
-        "arn:aws:logs:*:*:log-group:chained-aws-lambda-fasttest-$DEPLOYMENT_STAGE:log-stream:*",
-        "arn:aws:logs:*:*:log-group:chained-aws-lambda-s3_copy-$DEPLOYMENT_STAGE",
-        "arn:aws:logs:*:*:log-group:chained-aws-lambda-s3_copy-$DEPLOYMENT_STAGE:log-stream:*",
-        "arn:aws:logs:*:*:log-group:chained-aws-lambda-s3_parallel_copy-supervisor-$DEPLOYMENT_STAGE",
-        "arn:aws:logs:*:*:log-group:chained-aws-lambda-s3_parallel_copy_supervisor-$DEPLOYMENT_STAGE:log-stream:*",
-        "arn:aws:logs:*:*:log-group:chained-aws-lambda-supervisortest-$DEPLOYMENT_STAGE",
-        "arn:aws:logs:*:*:log-group:chained-aws-lambda-supervisortest-$DEPLOYMENT_STAGE:log-stream:*"
+        "arn:aws:logs:*:*:log-group:chained-aws-lambda-fasttest-dev",
+        "arn:aws:logs:*:*:log-group:chained-aws-lambda-fasttest-dev:log-stream:*",
+        "arn:aws:logs:*:*:log-group:chained-aws-lambda-s3-copy-dev",
+        "arn:aws:logs:*:*:log-group:chained-aws-lambda-s3-copy-dev:log-stream:*",
+        "arn:aws:logs:*:*:log-group:chained-aws-lambda-s3-parallel-copy-supervisor-dev",
+        "arn:aws:logs:*:*:log-group:chained-aws-lambda-s3-parallel-copy-supervisor-dev:log-stream:*",
+        "arn:aws:logs:*:*:log-group:chained-aws-lambda-supervisortest-dev",
+        "arn:aws:logs:*:*:log-group:chained-aws-lambda-supervisortest-dev:log-stream:*"
       ]
     },
     {
       "Effect": "Allow",
       "Action": "sns:*",
       "Resource": [
-        "arn:aws:sns:*:$account_id:chained-aws-lambda-fasttest-$DEPLOYMENT_STAGE",
-        "arn:aws:sns:*:$account_id:chained-aws-lambda-s3_copy-$DEPLOYMENT_STAGE",
-        "arn:aws:sns:*:$account_id:chained-aws-lambda-s3_parallel_copy_supervisor-$DEPLOYMENT_STAGE",
-        "arn:aws:sns:*:$account_id:chained-aws-lambda-s3_parallel_copy_worker-$DEPLOYMENT_STAGE",
-        "arn:aws:sns:*:$account_id:chained-aws-lambda-supervisortest-$DEPLOYMENT_STAGE"
+        "arn:aws:sns:*:$account_id:chained-aws-lambda-fasttest-dev",
+        "arn:aws:sns:*:$account_id:chained-aws-lambda-s3-copy-dev",
+        "arn:aws:sns:*:$account_id:chained-aws-lambda-s3-parallel-copy-supervisor-dev",
+        "arn:aws:sns:*:$account_id:chained-aws-lambda-s3-parallel-copy-worker-dev",
+        "arn:aws:sns:*:$account_id:chained-aws-lambda-supervisortest-dev"
       ]
     }
   ]

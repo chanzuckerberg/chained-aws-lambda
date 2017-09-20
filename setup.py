@@ -7,7 +7,7 @@ install_requires = [line.rstrip() for line in open(os.path.join(os.path.dirname(
 
 setup(
     name="chained-aws-lambda",
-    version="0.0.1",
+    version="0.0.2-beta",
     url='https://github.com/chanzuckerberg/chained-aws-lambda',
     license='Apache Software License',
     author='Human Cell Atlas contributors',
@@ -18,7 +18,11 @@ setup(
     extras_require={},
     packages=find_packages("src"),
     package_dir={"":"src"},
-    scripts=glob.glob('scripts/*'),
+    scripts=[
+        os.path.join(root, f)
+        for root, dirs, files in os.walk('scripts')
+        for f in files
+    ],
     platforms=['MacOS X', 'Posix'],
     zip_safe=False,
     test_suite='test',
