@@ -21,8 +21,8 @@ $(chainedawslambdatargets): chained-aws-lambda-%:
 	  --enable-supervisortest --supervisortest-lambda-name chained-aws-lambda-supervisortest-dev \
 	  --$*-policy-path $@/.chalice/policy.json --$*-app-path $@/app.py
 
-	# blindly enable access to our test S3 bucket.  This is ok since most daemons require it anyway.
 	cat chained-aws-lambda/.chalice/config.json | jq '.app_name="$@"' > $@/.chalice/config.json
+	# blindly enable access to our test S3 bucket.  This is ok since most daemons require it anyway.
 	cat $@/.chalice/policy.json | jq -f s3_enable.filter | sponge $@/.chalice/policy.json
 	cp -R ../src/chainedawslambda $@/domovoilib
 	./build_deploy_config.sh $@ dev

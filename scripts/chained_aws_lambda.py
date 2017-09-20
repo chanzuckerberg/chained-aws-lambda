@@ -15,7 +15,7 @@ except ImportError:
     pkg_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src"))  # noqa
     sys.path.insert(0, pkg_root)  # noqa
 
-from chainedawslambda import aws, _awstest, s3copyclient
+from chainedawslambda import _awstest, s3copyclient
 
 PROVIDED_CLIENT_METADATA = {
     "S3 copy client": dict(
@@ -49,9 +49,26 @@ PROVIDED_CLIENT_METADATA = {
 
 
 def parse_args():
+    deps = collections.defaultdict(lambda: set())
+
     parser = argparse.ArgumentParser()
 
     parser.add_argument("account_id", help="AWS account ID for this deployment")
+    lambda_action = parser.add_argument(
+        "--lambda-name",
+        help="The name of the lambda that manages this request.",
+    )
+    policy_path_action = parser.add_argument(
+        "--policy-path",
+        help="Write the minimum IAM policy for running this client to this file.",
+    )
+    app_path_action = parser.add_argument(
+        "--app-path",
+        help="Write the generated app.py to this file.",
+    )
+
+    deps[policy_path_action].add(lambda_action)
+    deps[app_path_action].add(lambda_action)
 
     # add the arguments common to all groups.
     common_args = (
@@ -59,7 +76,6 @@ def parse_args():
         ("policy-path", str, "Write the minimum IAM policy for running this client to this file.", False),
         ("app-path", str, "Write the generated app.py to this file.", False)
     )
-    deps = collections.defaultdict(lambda: set())
 
     groups = dict()
     for group_title, group_metadata in PROVIDED_CLIENT_METADATA.items():
@@ -195,6 +211,25 @@ def main():
                 },
                 policy_path,
             )
+
+    if args.app_path:
+        write_jinja_file(
+            "app.py.jinja",
+            {
+                'provided_clients': clients,
+                'lambda_name': args.lambda_name,
+            },
+            args.app_path,
+        )
+    if args.policy_path:
+        write_jinja_file(
+            "policy.json.jinja",
+            {
+                'account_id': args.account_id,
+                'lambda_name': args.lambda_name,
+            },
+            args.policy_path,
+        )
 
 
 if __name__ == "__main__":
