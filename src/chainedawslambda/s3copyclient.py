@@ -8,7 +8,7 @@ from concurrent.futures import ThreadPoolExecutor
 import boto3
 
 from . import Runtime, Task
-from ...blobstore.s3 import S3BlobStore
+from .blobstore.s3 import S3BlobStore
 
 
 AWS_S3_COPY_CLIENT_NAME = "s3_copy"

@@ -2,7 +2,7 @@ import json
 import typing
 
 from . import aws, awsconstants
-from ...util.aws.logging import log_message
+from .util.aws.logging import log_message
 from .base import Runtime, Task
 
 

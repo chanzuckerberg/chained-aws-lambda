@@ -3,7 +3,7 @@ import itertools
 import typing
 import uuid
 
-from chainedawslambda.events.chainedawslambda import Runner, Runtime, Task
+from chainedawslambda import Runner, Runtime, Task
 
 
 class TestStingyRuntime(Runtime[dict, typing.Any]):

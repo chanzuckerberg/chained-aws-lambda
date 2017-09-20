@@ -13,12 +13,11 @@ import unittest
 pkg_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', "src"))  # noqa
 sys.path.insert(0, pkg_root)  # noqa
 
-from chainedawslambda.events import chainedawslambda
-from chainedawslambda.events.chainedawslambda import Task, aws, _awstest
+from chainedawslambda import Task, aws, _awstest
 from tests.chunked_worker import TestStingyRuntime, run_task_to_completion
 
 
-class TestChainedAWSLambda(chainedawslambda.Task[typing.Tuple[int, int, int], typing.Tuple[int, int]]):
+class TestChainedAWSLambda(Task[typing.Tuple[int, int, int], typing.Tuple[int, int]]):
     def __init__(
             self,
             state: typing.Tuple[int, int, int],
