@@ -66,9 +66,18 @@ def parse_args():
         "--app-path",
         help="Write the generated app.py to this file.",
     )
+    children_action = parser.add_argument(
+        "--child-lambda-name",
+        help="List of lambdas this lambda might call.",
+        type=str,
+        action="append",
+        dest="children_action",
+        default=[],
+    )
 
     deps[policy_path_action].add(lambda_action)
     deps[app_path_action].add(lambda_action)
+    deps[children_action].add(policy_path_action)
 
     # add the arguments common to all groups.
     common_args = (
@@ -104,7 +113,7 @@ def parse_args():
 
     # run some checks to ensure that everything is present.
     for enable_action, dep_action_list in deps.items():
-        if getattr(args, enable_action.dest) is True:
+        if getattr(args, enable_action.dest):
             # ensure that all the suffixes are set.
             for dep_action in dep_action_list:
                 if not getattr(args, dep_action.dest):
@@ -231,6 +240,7 @@ def main():
             {
                 'account_id': args.account_id,
                 'lambda_name': args.lambda_name,
+                'children_lambda': args.children_action,
             },
             args.policy_path,
         )
