@@ -15,15 +15,15 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 
-clients = dict()  # type: typing.MutableMapping[str, Task]
+clients = dict()  # type: typing.MutableMapping[str, typing.Type[Task]]
 
 
 # this is the authoritative mapping between client names and Task classes.
-def get_clients() -> typing.MutableMapping[str, Task]:
+def get_clients() -> typing.MutableMapping[str, typing.Type[Task]]:
     return clients
 
 
-def add_client(client_name: str, client_class: Task):
+def add_client(client_name: str, client_class: typing.Type[Task]):
     clients[client_name] = client_class
 
 
