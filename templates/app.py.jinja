@@ -8,7 +8,6 @@ pkg_root = os.path.abspath(os.path.join(os.path.dirname(__file__), 'domovoilib')
 sys.path.insert(0, pkg_root)  # noqa
 
 from chainedawslambda import aws
-from chainedawslambda import awsconstants
 {# imports for the provided clients #}
 {% for provided_client in provided_clients %}
 from {{ provided_client['package_name'] }} import {{ provided_client['class_name'] }}

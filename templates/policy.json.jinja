@@ -16,8 +16,8 @@
         "arn:aws:logs:*:*:log-group:{{ child_lambda_name }}",
         "arn:aws:logs:*:*:log-group:{{ child_lambda_name }}:log-stream:*",
         {% endfor %}
-        "arn:aws:logs:*:*:log-group:{{ lambda_name }}",
-        "arn:aws:logs:*:*:log-group:{{ lambda_name }}:log-stream:*"
+        "arn:aws:logs:*:*:log-group:*{{ lambda_name }}",
+        "arn:aws:logs:*:*:log-group:*{{ lambda_name }}:log-stream:*"
       ]
     },
     {
