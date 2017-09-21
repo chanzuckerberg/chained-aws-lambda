@@ -127,7 +127,11 @@ def write_jinja_file(template_file, template_vars, file_path, overwrite=True):
 
     dirname = os.path.dirname(__file__)
 
-    template_loader = FileSystemLoader(searchpath=os.path.join(dirname, "templates"))
+    template_loader = FileSystemLoader(
+        searchpath=[
+            os.path.join(dirname, "..", "templates"), # this is the non-installed path
+            os.path.join(dirname, "..", "share", "chained-aws-lambda", "templates"),
+        ])
 
     # An environment provides the data necessary to read and parse our templates. Pass in the loader object here.
     template_env = Environment(loader=template_loader, trim_blocks=True, lstrip_blocks=True)

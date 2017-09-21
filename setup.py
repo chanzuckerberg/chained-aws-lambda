@@ -18,11 +18,8 @@ setup(
     extras_require={},
     packages=find_packages("src"),
     package_dir={"":"src"},
-    scripts=[
-        os.path.join(root, f)
-        for root, dirs, files in os.walk('scripts')
-        for f in files
-    ],
+    scripts=glob.glob('scripts/*.py'),
+    data_files=[('share/chained-aws-lambda/templates', glob.glob('templates/*'))],
     platforms=['MacOS X', 'Posix'],
     zip_safe=False,
     test_suite='test',
