@@ -93,6 +93,7 @@ def parse_payload(payload: dict, expected_client_name: str):
                 message="Could not find task_id",
                 payload=payload,
                 exception=str(ex),
+                stacktrace=traceback.format_exc(),
             )),
         )
         return None
@@ -112,6 +113,8 @@ def parse_payload(payload: dict, expected_client_name: str):
                 message="Request payload missing required data",
                 payload=payload,
                 exception=str(ex),
+                stacktrace=traceback.format_exc(),
+                valid_clients=str(get_clients()),
             )),
         )
         return None

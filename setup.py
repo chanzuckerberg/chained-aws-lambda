@@ -7,7 +7,7 @@ install_requires = [line.rstrip() for line in open(os.path.join(os.path.dirname(
 
 setup(
     name="chained-aws-lambda",
-    version="0.0.2a4",
+    version="0.0.3",
     url='https://github.com/chanzuckerberg/chained-aws-lambda',
     license='Apache Software License',
     author='Human Cell Atlas contributors',
