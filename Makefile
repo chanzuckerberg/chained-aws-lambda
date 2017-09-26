@@ -17,9 +17,6 @@ fast_test: lint mypy $(test_srcs)
 $(test_srcs): %.py :
 	python -m unittest $@
 
-smoketest:
-	scripts/smoketest.py
-
 deploy:
 	$(MAKE) -C daemons deploy
 
