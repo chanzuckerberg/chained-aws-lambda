@@ -1,7 +1,8 @@
-flake8
-mypy >= 0.521
-domovoi
-chalice >= 1.0.1
 awscli
+chalice >= 1.0.1
 coverage
+domovoi
+flake8
+httpie
+mypy >= 0.521
 -r requirements.txt

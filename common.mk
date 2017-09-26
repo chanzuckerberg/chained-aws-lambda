@@ -51,9 +51,9 @@ release:
 	git push --follow-tags
 	http --auth ${GH_AUTH} ${RELEASES_API} tag_name=${TAG} name=${TAG} \
 	    body="$$(git tag --list ${TAG} -n99 | perl -pe 's/^\S+\s*// if $$. == 1' | sed 's/^\s\s\s\s//')"
-	$(MAKE) install
-	http --auth ${GH_AUTH} POST ${UPLOADS_API}/$$(http --auth ${GH_AUTH} ${RELEASES_API}/latest | jq .id)/assets \
-	    name==$$(basename dist/*.whl) label=="Python Wheel" < dist/*.whl
+	# $(MAKE) install
+	# http --auth ${GH_AUTH} POST ${UPLOADS_API}/$$(http --auth ${GH_AUTH} ${RELEASES_API}/latest | jq .id)/assets \
+	#     name==$$(basename dist/*.whl) label=="Python Wheel" < dist/*.whl
 	$(MAKE) pypi_release
 
 pypi_release:
