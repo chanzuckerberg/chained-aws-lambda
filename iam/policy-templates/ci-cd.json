@@ -15,7 +15,10 @@
       ]
     },
     {
-      "Action": "lambda:List*",
+      "Action": [
+        "lambda:List*",
+        "lambda:TagResource"
+      ],
       "Resource": "*",
       "Effect": "Allow"
     },
