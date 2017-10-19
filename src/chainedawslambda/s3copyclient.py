@@ -6,9 +6,9 @@ import typing
 from concurrent.futures import ThreadPoolExecutor
 
 import boto3
+from cloud_blobstore.s3 import S3BlobStore
 
 from . import Runtime, Task
-from .blobstore.s3 import S3BlobStore
 
 
 # intuitively, this ought to be an enum, but serializing an enum is way too complicated.

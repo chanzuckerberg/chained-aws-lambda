@@ -10,11 +10,12 @@ import sys
 import time
 import unittest
 
+from cloud_blobstore import BlobNotFoundError
+from cloud_blobstore.s3 import S3BlobStore
+
 pkg_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', "src"))  # noqa
 sys.path.insert(0, pkg_root)  # noqa
 
-from chainedawslambda.blobstore import BlobNotFoundError
-from chainedawslambda.blobstore.s3 import S3BlobStore
 from chainedawslambda import aws
 from chainedawslambda.s3copyclient import S3CopyTask, S3ParallelCopySupervisorTask
 from tests import infra
