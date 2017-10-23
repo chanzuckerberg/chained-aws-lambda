@@ -93,7 +93,6 @@ class SupervisorTask(Task[dict, bool]):
     def __init__(self, state: dict, runtime: Runtime) -> None:
         self.state = state
         self.runtime = runtime
-        self.last_checked = None  # type: typing.Optional[float]
 
     @property
     def expected_max_one_unit_runtime_millis(self) -> int:
@@ -127,6 +126,7 @@ class SupervisorTask(Task[dict, bool]):
 class AWSSupervisorTask(SupervisorTask):
     def __init__(self, state: dict, runtime: AWSRuntime) -> None:
         super().__init__(state, runtime)
+        self.last_checked = None  # type: typing.Optional[float]
 
     def check_success_marker(self):
         # don't pound the filter logs API to a pulp.
