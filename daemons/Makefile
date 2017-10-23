@@ -8,9 +8,13 @@ chainedawslambdatargets := chained-aws-lambda-s3-parallel-copy-supervisor \
                            chained-aws-lambda-fasttest \
                            chained-aws-lambda-supervisortest \
 
+chainedawslambdaconfigtargets := $(addsuffix .config, $(chainedawslambdatargets))
+
 chained-aws-lambda: $(chainedawslambdatargets)
-$(chainedawslambdatargets):
-	./build_deploy_config.sh $@ dev
+$(chainedawslambdatargets): chained-aws-lambda-% : chained-aws-lambda-%.config
 	cd $@; domovoi deploy --stage dev
 
-.PHONY: chained-aws-lambda $(chainedawslambdatargets)
+$(chainedawslambdaconfigtargets): chained-aws-lambda-%.config :
+	./build_deploy_config.sh chained-aws-lambda-$* dev
+
+.PHONY: chained-aws-lambda $(chainedawslambdatargets) $(chainedawslambdaconfigtargets)
