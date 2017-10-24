@@ -50,7 +50,9 @@
         "arn:aws:logs:*:*:log-group:chained-aws-lambda-s3-parallel-copy-supervisor-dev",
         "arn:aws:logs:*:*:log-group:chained-aws-lambda-s3-parallel-copy-supervisor-dev:log-stream:*",
         "arn:aws:logs:*:*:log-group:chained-aws-lambda-supervisortest-dev",
-        "arn:aws:logs:*:*:log-group:chained-aws-lambda-supervisortest-dev:log-stream:*"
+        "arn:aws:logs:*:*:log-group:chained-aws-lambda-supervisortest-dev:log-stream:*",
+        "arn:aws:logs:*:*:log-group:chained-aws-lambda-conditional-failure-dev",
+        "arn:aws:logs:*:*:log-group:chained-aws-lambda-conditional-failure-dev:log-stream:*"
       ]
     },
     {
@@ -61,7 +63,8 @@
         "arn:aws:sns:*:$account_id:chained-aws-lambda-s3-copy-dev",
         "arn:aws:sns:*:$account_id:chained-aws-lambda-s3-parallel-copy-supervisor-dev",
         "arn:aws:sns:*:$account_id:chained-aws-lambda-s3-parallel-copy-worker-dev",
-        "arn:aws:sns:*:$account_id:chained-aws-lambda-supervisortest-dev"
+        "arn:aws:sns:*:$account_id:chained-aws-lambda-supervisortest-dev",
+        "arn:aws:sns:*:$account_id:chained-aws-lambda-conditional-failure-dev"
       ]
     }
   ]

@@ -45,6 +45,11 @@ PROVIDED_CLIENT_METADATA = {
         cls=_awstest.AWSSupervisorTask,
         children=['fast test'],
     ),
+    "conditional failure": dict(
+        description="client for testing retry code",
+        argname="conditional-failure",
+        cls=_awstest.ConditionalFailureTask,
+    ),
 }
 
 

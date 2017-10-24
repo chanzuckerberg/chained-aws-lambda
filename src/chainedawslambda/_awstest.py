@@ -5,6 +5,7 @@ import time
 import typing
 
 import boto3
+from cloud_blobstore.s3 import S3BlobStore
 
 from . import aws
 from ._awsimpl import AWSRuntime
@@ -141,3 +142,22 @@ class AWSSupervisorTask(SupervisorTask):
 
         self.last_checked = time.time()
         return None
+
+
+class ConditionalFailureTask(Task[dict, bool]):
+    def __init__(self, state: dict, runtime: Runtime) -> None:
+        self.state = state
+        self.runtime = runtime
+
+    @property
+    def expected_max_one_unit_runtime_millis(self) -> int:
+        return sys.maxsize
+
+    def get_state(self) -> dict:
+        return self.state
+
+    def run_one_unit(self) -> typing.Optional[bool]:
+        blobstore = S3BlobStore()
+        blobstore.get_all_metadata(self.state["bucket"], self.state["key"])
+
+        return True

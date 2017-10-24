@@ -1,0 +1,8 @@
+.Statement +=
+  [
+    {
+      "Effect": "Allow",
+      "Action": "sqs:SendMessage",
+      "Resource": "arn:aws:sqs:*:*:chained-aws-lambda-conditional-failure-dev"
+    }
+  ]
