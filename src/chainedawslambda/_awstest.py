@@ -4,35 +4,38 @@ import sys
 import time
 import typing
 
-import boto3
-
 from . import aws
 from ._awsimpl import AWSRuntime
 from .awsconstants import LogActions
-from .constants import TIME_OVERHEAD_FACTOR
 from .base import Runtime, Task
+from .constants import TIME_OVERHEAD_FACTOR
+from .util.aws.logging import scan_logs
 
 
 def is_task_complete(client_name: str, task_id: str):
     """
     Scan AWS Cloudwatch logs to check if a chunked task is complete.
     """
-    logs_client = boto3.client('logs')
-    response = logs_client.filter_log_events(
-        logGroupName=client_name,
-        logStreamNames=[task_id],
-    )
-
-    for event in response['events']:
+    def log_consumer(log_message: typing.Optional[str]) -> typing.Optional[bool]:
+        if log_message is None:
+            return False
         try:
-            message = json.loads(event['message'])
+            message = json.loads(log_message)
         except json.JSONDecodeError:
-            continue
+            return None
 
         if message.get('action') == LogActions.COMPLETE:
             return True
 
-    return False
+        return None
+
+    return scan_logs(
+        dict(
+            logGroupName=client_name,
+            logStreamNames=[task_id],
+        ),
+        log_consumer
+    )
 
 
 # The rest of this file is for unit tests.  The reason they are in this file is because they need to be deployed to the
